@@ -1,4 +1,4 @@
-abs
+Absolute Value
 ===
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependencies][dependencies-image]][dependencies-url]
 
@@ -19,24 +19,54 @@ For use in the browser, use [browserify](https://github.com/substack/node-browse
 To use the module,
 
 ``` javascript
-var foo = require( 'compute-abs' );
+var abs = require( 'compute-abs' );
 ```
 
-#### foo( arr )
+#### abs( arr )
 
-What does this function do?
+Computes an element-wise absolute value for each element in a numeric `array`.
+
+``` javascript
+var data = [ -1, 2, -3 ];
+
+abs( data );
+// returns [ 1, 2, 3 ]
+```
 
 
 ## Examples
 
 ``` javascript
-var foo = require( 'compute-abs' );
+var abs = require( 'compute-abs' );
+
+// Simulate some data...
+var data = new Array( 100 );
+
+for ( var i = 0; i < data.length; i++ ) {
+	data[ i ] = Math.round( Math.random()*100 ) - 50;
+}
+
+abs( data );
+
+console.log( data.join( '\n' ) );
 ```
 
 To run the example code from the top-level application directory,
 
 ``` bash
 $ node ./examples/index.js
+```
+
+
+## Notes
+
+This function mutates the input `array`. If mutation is undesired,
+
+``` javascript
+var data = [ -1, 2, -3, 4 ],
+	copy = data.slice();
+
+abs( copy );
 ```
 
 
