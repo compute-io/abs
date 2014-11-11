@@ -49,7 +49,7 @@ describe( 'compute-abs', function tests() {
 	it( 'should compute an element-wise absolute value', function test() {
 		var data, expected;
 
-		data = [ -5, 2, -4, 1, -2, 0 ];
+		data = [ -5, 2, -4, 1, -2, -0 ];
 		expected = [ 5, 2, 4, 1, 2, 0 ];
 
 		abs( data );
