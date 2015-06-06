@@ -125,8 +125,8 @@ describe( 'compute-abs', function tests() {
 	it( 'should compute an element-wise absolute value for a matrix', function test() {
 		var data, expected, results;
 
-		data = matrix( new Int32Array( [ 2, -4, 5, -3, 8, 3, -7, 2, 1 ] ), [3,3] );
-		expected = '2,4,5;3,8,3;7,2,1';
+		data = matrix( new Int32Array( [ 2, -4, 5, -3, 8, 0, -7, 2, 1 ] ), [3,3] );
+		expected = '2,4,5;3,8,0;7,2,1';
 
 		results = abs( data );
 
@@ -136,8 +136,8 @@ describe( 'compute-abs', function tests() {
 	it( 'should compute an element-wise absolute value for a matrix and mutate the input', function test() {
 		var data, expected, results;
 
-		data = matrix( new Int32Array( [ 2, -4, 5, -3, 8, 3, -7, 2, 1 ] ), [3,3] );
-		expected = '2,4,5;3,8,3;7,2,1';
+		data = matrix( new Int32Array( [ 2, -4, 5, -3, 8, 0, -7, 2, 1 ] ), [3,3] );
+		expected = '2,4,5;3,8,0;7,2,1';
 
 		results = abs( data, {'copy': false} );
 
@@ -146,5 +146,8 @@ describe( 'compute-abs', function tests() {
 		assert.ok( results.data === data.data );
 	});
 
+	it( 'should return null if provided an empty array', function test() {
+		assert.isNull( abs( [] ) );
+	});
 
 });
