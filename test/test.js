@@ -1,3 +1,4 @@
+/* global require, describe, it */
 'use strict';
 
 // MODULES //
@@ -5,11 +6,14 @@
 var // Expectation library:
 	chai = require( 'chai' ),
 
-	// Matrix data structure
+	// Matrix data structure:
 	matrix = require( 'dstructs-matrix' ),
 
 	// Module to be tested:
-	abs = require( './../lib' );
+	abs = require( './../lib' ),
+
+	// Absolute value function:
+	ABS = require( './../lib/number.js' );
 
 
 // VARIABLES //
@@ -26,22 +30,20 @@ describe( 'compute-abs', function tests() {
 		expect( abs ).to.be.a( 'function' );
 	});
 
-	it( 'should throw an error if provided an input which is not array-like or matrix-like', function test() {
+	it( 'should throw an error if the first argument is neither a number or array-like or matrix-like', function test() {
 		var values = [
-				5,
-				// '5',
-				{},
-				true,
-				null,
-				undefined,
-				NaN,
-				function(){}
-			];
+			// '5', // valid as is array-like (length)
+			true,
+			undefined,
+			null,
+			NaN,
+			function(){},
+			{}
+		];
 
 		for ( var i = 0; i < values.length; i++ ) {
 			expect( badValue( values[i] ) ).to.throw( TypeError );
 		}
-
 		function badValue( value ) {
 			return function() {
 				abs( value );
@@ -49,7 +51,7 @@ describe( 'compute-abs', function tests() {
 		}
 	});
 
-	it( 'should throw an error if `options` is not an object', function test() {
+	it( 'should throw an error if provided an invalid option', function test() {
 		var values = [
 			'5',
 			5,
@@ -58,96 +60,283 @@ describe( 'compute-abs', function tests() {
 			null,
 			NaN,
 			[],
-			function(){}
+			{}
 		];
 
 		for ( var i = 0; i < values.length; i++ ) {
-			expect( badValue( values[ i ] ) ).to.throw( TypeError );
+			expect( badValue( values[i] ) ).to.throw( TypeError );
 		}
-
 		function badValue( value ) {
 			return function() {
-				abs( [1,2,3,4,5], value );
+				abs( [1,2,3], {
+					'accessor': value
+				});
 			};
 		}
 	});
 
+	it( 'should throw an error if provided an array and an unrecognized/unsupported data type option', function test() {
+		var values = [
+			'beep',
+			'boop'
+		];
 
-	it( 'should compute an element-wise absolute value for an array', function test() {
-		var data, expected, result;
-
-		data = [ -5, 2, -4, 1, -2, -0 ];
-		expected = [ 5, 2, 4, 1, 2, 0 ];
-
-		result = abs( data );
-		assert.deepEqual( result, expected );
+		for ( var i = 0; i < values.length; i++ ) {
+			expect( badValue( values[i] ) ).to.throw( Error );
+		}
+		function badValue( value ) {
+			return function() {
+				abs( [1,2,3], {
+					'dtype': value
+				});
+			};
+		}
 	});
 
-	it( 'should compute an element-wise absolute value for an array and mutate it', function test() {
-		var data, expected, result;
+	it( 'should throw an error if provided a matrix and an unrecognized/unsupported data type option', function test() {
+		var values = [
+			'beep',
+			'boop'
+		];
 
-		data = [ -5, 2, -4, 1, -2, -0 ];
-		expected = [ 5, 2, 4, 1, 2, 0 ];
+		for ( var i = 0; i < values.length; i++ ) {
+			expect( badValue( values[i] ) ).to.throw( Error );
+		}
+		function badValue( value ) {
+			return function() {
+				abs( matrix( [2,2] ), {
+					'dtype': value
+				});
+			};
+		}
+	});
 
-		result = abs( data, {
+	it( 'should compute the error function when provided a number', function test() {
+		assert.strictEqual( abs( 0 ), 0 );
+		assert.strictEqual( abs( -2 ), 2 );
+	});
+
+	it( 'should evaluate the absolute value function when provided a plain array', function test() {
+		var data, actual, expected;
+
+		data = [ -3, -2, -1, 0, 1, 2, 3 ];
+		expected = [
+			3,
+			2,
+			1,
+			0,
+			1,
+			2,
+			3
+		];
+
+		actual = abs( data );
+		assert.notEqual( actual, data );
+
+		assert.deepEqual( actual, expected );
+
+		// Mutate...
+		actual = abs( data, {
 			'copy': false
 		});
+		assert.strictEqual( actual, data );
 
-		assert.ok( result === data );
+		assert.deepEqual( data, expected );
 
-		assert.deepEqual( result, expected );
 	});
 
-	it( 'should compute an element-wise absolute value for an array using an accessor', function test() {
-		var data, expected, result;
+	it( 'should evaluate the absolute value function when provided a typed array', function test() {
+		var data, actual, expected;
+
+		data = new Int8Array( [ -3, -2, -1, 0, 1, 2, 3 ] );
+
+		expected = new Float64Array( [
+			3,
+			2,
+			1,
+			0,
+			1,
+			2,
+			3
+		]);
+
+		actual = abs( data );
+		assert.notEqual( actual, data );
+
+		assert.deepEqual( actual, expected );
+
+		// Mutate:
+		actual = abs( data, {
+			'copy': false
+		});
+		expected = new Int8Array( [ 3, 2, 1, 0, 1, 2, 3 ] );
+		assert.strictEqual( actual, data );
+
+		assert.deepEqual( data, expected );
+	});
+
+	it( 'should evaluate the absolute value function element-wise and return an array of a specific type', function test() {
+		var data, actual, expected;
+
+		data = [ -3, -2, -1, 0, 1, 2, 3 ];
+		expected = new Int8Array( [ 3, 2, 1, 0, 1, 2, 3 ] );
+
+		actual = abs( data, {
+			'dtype': 'int8'
+		});
+		assert.notEqual( actual, data );
+		assert.deepEqual( actual, expected );
+	});
+
+	it( 'should evaluate the absolute value function element-wise using an accessor', function test() {
+		var data, actual, expected;
 
 		data = [
-			{'x': -5},
-			{'x':  2},
-			{'x': -4},
-			{'x':  1},
-			{'x': -2},
-			{'x': -0} ];
+			[0,-3],
+			[1,-2],
+			[2,-1],
+			[3,0],
+			[4,1],
+			[5,2],
+			[6,3]
+		];
 
-		expected = [ 5, 2, 4, 1, 2, 0 ];
+		expected = [
+			3,
+			2,
+			1,
+			0,
+			1,
+			2,
+			3
+		];
 
-		result = abs( data, {
+		actual = abs( data, {
 			'accessor': getValue
 		});
-		assert.deepEqual( result, expected );
+		assert.notEqual( actual, data );
+
+		assert.deepEqual( actual, expected );
+
+		// Mutate:
+		actual = abs( data, {
+			'accessor': getValue,
+			'copy': false
+		});
+		assert.strictEqual( actual, data );
+
+		assert.deepEqual( data, expected );
 
 		function getValue( d ) {
-			return d.x;
+			return d[ 1 ];
 		}
+	});
+
+	it( 'should evaluate the absolute value function element-wise and deep set', function test() {
+		var data, actual, expected;
+
+		data = [
+			{'x':[0,-3]},
+			{'x':[1,-2]},
+			{'x':[2,-1]},
+			{'x':[3,0]},
+			{'x':[4,1]},
+			{'x':[5,2]},
+			{'x':[6,3]}
+		];
+		expected = [
+			{'x':[0,3]},
+			{'x':[1,2]},
+			{'x':[2,1]},
+			{'x':[3,0]},
+			{'x':[4,1]},
+			{'x':[5,2]},
+			{'x':[6,3]}
+		];
+
+		actual = abs( data, {
+			'path': 'x.1'
+		});
+
+		assert.strictEqual( actual, data );
+
+		assert.deepEqual( actual, expected );
+
+		// Specify a path with a custom separator...
+
+		data = [
+			{'x':[0,-3]},
+			{'x':[1,-2]},
+			{'x':[2,-1]},
+			{'x':[3,0]},
+			{'x':[4,1]},
+			{'x':[5,2]},
+			{'x':[6,3]}
+		];
+		actual = abs( data, {
+			'path': 'x/1',
+			'sep': '/'
+		});
+		assert.strictEqual( actual, data );
+
+		assert.deepEqual( actual, expected );
 
 	});
 
-	it( 'should compute an element-wise absolute value for a matrix', function test() {
-		var data, expected, results;
+	it( 'should evaluate the absolute value function element-wise when provided a matrix', function test() {
+		var mat,
+			out,
+			d1,
+			d2,
+			i;
 
-		data = matrix( new Int32Array( [ 2, -4, 5, -3, 8, 0, -7, 2, 1 ] ), [3,3] );
-		expected = '2,4,5;3,8,0;7,2,1';
+		d1 = new Int16Array( 100 );
+		d2 = new Int16Array( 100 );
+		for ( i = 0; i < d1.length; i++ ) {
+			d1[ i ] = i - 50;
+			d2[ i ] = ABS( i - 50 );
+		}
+		mat = matrix( d1, [10,10], 'int16' );
+		out = abs( mat, {
+			'dtype': 'int16'
+		});
 
-		results = abs( data );
+		assert.deepEqual( out.data, d2 );
 
-		assert.strictEqual( results.toString(), expected );
+		// Mutate...
+		out = abs( mat, {
+			'copy': false
+		});
+		assert.strictEqual( mat, out );
+		assert.deepEqual( mat.data, d2 );
 	});
 
-	it( 'should compute an element-wise absolute value for a matrix and mutate the input', function test() {
-		var data, expected, results;
+	it( 'should evaluate the absolute value function element-wise and return a matrix of a specific type', function test() {
+		var mat,
+			out,
+			d1,
+			d2,
+			i;
 
-		data = matrix( new Int32Array( [ 2, -4, 5, -3, 8, 0, -7, 2, 1 ] ), [3,3] );
-		expected = '2,4,5;3,8,0;7,2,1';
+		d1 = new Int16Array( 100 );
+		d2 = new Uint16Array( 100 );
+		for ( i = 0; i < d1.length; i++ ) {
+			d1[ i ] = i - 50;
+			d2[ i ] = ABS( i - 50 );
+		}
+		mat = matrix( d1, [10,10], 'int16' );
+		out = abs( mat, {
+			'dtype': 'uint16'
+		});
 
-		results = abs( data, {'copy': false} );
-
-		assert.strictEqual( results.toString(), expected);
-
-		assert.ok( results.data === data.data );
+		assert.strictEqual( out.dtype, 'uint16' );
+		assert.deepEqual( out.data, d2 );
 	});
 
-	it( 'should return null if provided an empty array', function test() {
+	it( 'should return `null` if provided an empty data structure', function test() {
 		assert.isNull( abs( [] ) );
+		assert.isNull( abs( matrix( [0,0] ) ) );
+		assert.isNull( abs( new Int8Array() ) );
 	});
 
 });
