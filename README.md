@@ -27,10 +27,43 @@ Computes an element-wise absolute value. `x` may be either a [`number`](https://
 
 
 ``` javascript
-var data = [ -1, 2, -3 ];
+var matrix = require( 'dstructs-matrix' ),
+	data,
+	mat,
+	out,
+	i;
 
-abs( data );
-// returns [ 1, 2, 3 ]
+out = abs( 3 );
+// returns 3
+
+out = abs( -3 );
+// returns 3
+
+data = [ -2, 1, -3 ];
+out = abs( data );
+// returns [ 2, 1, 3 ]
+
+data = new Int8Array( data );
+out = abs( data );
+// returns Float64Array( [2, 1, 3] )
+
+data = new Int16Array( 6 );
+for ( i = 0; i < 6; i++ ) {
+	data[ i ] = i - 3;
+}
+mat = matrix( data, [3,2], 'int16' );
+/*
+	[ -3  -2
+	  -1   0
+	   1  2 ]
+*/
+
+out = abs( mat );
+/*
+	[ 3 2
+	  1 0
+	  1 2 ]
+*/
 ```
 
 The function accepts the following `options`:
