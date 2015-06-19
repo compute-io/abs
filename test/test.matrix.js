@@ -26,7 +26,7 @@ var expect = chai.expect,
 
 describe( 'matrix abs', function tests() {
 
-	var out,
+	var expected,
 		mat,
 		d1,
 		d2,
@@ -41,7 +41,7 @@ describe( 'matrix abs', function tests() {
 
 	beforeEach( function before() {
 		mat = matrix( d1, [10,10], 'int16' );
-		out = matrix( d2, [10,10], 'int16' );
+		expected = matrix( d2, [10,10], 'int16' );
 	});
 
 	it( 'should export a function', function test() {
@@ -61,7 +61,7 @@ describe( 'matrix abs', function tests() {
 		actual = matrix( [10,10], 'int16' );
 		actual = abs( actual, mat );
 
-		assert.deepEqual( actual.data, out.data );
+		assert.deepEqual( actual.data, expected.data );
 	});
 
 	it( 'should return null if provided an empty matrix', function test() {

@@ -1,8 +1,7 @@
 'use strict';
 
 var matrix = require( 'dstructs-matrix' ),
-	abs = require( './../lib' ),
-	util = require( 'util' );
+	abs = require( './../lib' );
 
 var data,
 	mat,
@@ -48,7 +47,7 @@ out = abs( data, {
 	'sep': '/'
 });
 console.log( 'Deepset:' );
-console.log( util.inspect( out ) );
+console.dir( out );
 console.log( '\n' );
 
 
@@ -56,7 +55,7 @@ console.log( '\n' );
 // Typed arrays...
 data = new Int32Array( 10 );
 for ( i = 0; i < data.length; i++ ) {
-	data[ i ] = Math.random() * 20 - 100;
+	data[ i ] = Math.random()*20 - 100;
 }
 tmp = abs( data );
 out = '';

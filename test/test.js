@@ -111,7 +111,7 @@ describe( 'compute-abs', function tests() {
 		}
 	});
 
-	it( 'should compute the error function when provided a number', function test() {
+	it( 'should compute the absolute value when provided a number', function test() {
 		assert.strictEqual( abs( 0 ), 0 );
 		assert.strictEqual( abs( -2 ), 2 );
 	});
@@ -142,7 +142,6 @@ describe( 'compute-abs', function tests() {
 		assert.strictEqual( actual, data );
 
 		assert.deepEqual( data, expected );
-
 	});
 
 	it( 'should evaluate the absolute value function when provided a typed array', function test() {
@@ -185,6 +184,7 @@ describe( 'compute-abs', function tests() {
 			'dtype': 'int8'
 		});
 		assert.notEqual( actual, data );
+		assert.strictEqual( actual.BYTES_PER_ELEMENT, 1 );
 		assert.deepEqual( actual, expected );
 	});
 
@@ -263,7 +263,6 @@ describe( 'compute-abs', function tests() {
 		assert.deepEqual( actual, expected );
 
 		// Specify a path with a custom separator...
-
 		data = [
 			{'x':[0,-3]},
 			{'x':[1,-2]},

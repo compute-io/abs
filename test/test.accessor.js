@@ -24,7 +24,7 @@ describe( 'accessor abs', function tests() {
 		expect( abs ).to.be.a( 'function' );
 	});
 
-	it( 'should evaluate the absolute value function using an accessor', function test() {
+	it( 'should compute the absolute value using an accessor', function test() {
 		var data, actual, expected;
 
 		data = [

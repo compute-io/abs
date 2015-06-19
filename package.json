@@ -35,7 +35,12 @@
     "arithmetic",
     "array",
     "element-wise",
-    "absolute value"
+    "absolute value",
+    "arrays",
+    "matrix",
+    "matrices",
+    "accessor",
+    "abs"
   ],
   "bugs": {
     "url": "https://github.com/compute-io/abs/issues"
