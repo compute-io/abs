@@ -1,7 +1,7 @@
 {
   "name": "compute-abs",
   "version": "2.0.0",
-  "description": "Computes an element-wise absolute value for each element in a numeric array.",
+  "description": "Computes an element-wise absolute value.",
   "author": {
     "name": "Athan Reines",
     "email": "kgryte@gmail.com"
