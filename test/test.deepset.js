@@ -78,12 +78,12 @@ describe( 'deepset abs', function tests() {
 		for ( i = 0; i < data.length; i++ ) {
 			assert.strictEqual( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 'custom separator' );
 		}
-
 	});
 
-	it( 'should return null if provided an empty array', function test() {
-		assert.isNull( abs( [], 'x' ) );
-		assert.isNull( abs( [], 'x', '/' ) );
+	it( 'should return an empty array if provided an empty array', function test() {
+		var arr = [];
+		assert.deepEqual( abs( arr, 'x' ), [] );
+		assert.deepEqual( abs( arr, 'x', '/' ), [] );
 	});
 
 });

@@ -64,19 +64,20 @@ describe( 'matrix abs', function tests() {
 		assert.deepEqual( actual.data, expected.data );
 	});
 
-	it( 'should return null if provided an empty matrix', function test() {
-		var out, mat;
+	it( 'should return an empty matrix if provided an empty matrix', function test() {
+		var out, mat, expected;
 
 		out = matrix( [0,0] );
+		expected = matrix( [0,0] ).data;
 
 		mat = matrix( [0,10] );
-		assert.isNull( abs( out, mat ) );
+		assert.deepEqual( abs( out, mat ).data, expected );
 
 		mat = matrix( [10,0] );
-		assert.isNull( abs( out, mat ) );
+		assert.deepEqual( abs( out, mat ).data, expected );
 
 		mat = matrix( [0,0] );
-		assert.isNull( abs( out, mat ) );
+		assert.deepEqual( abs( out, mat ).data, expected );
 	});
 
 });

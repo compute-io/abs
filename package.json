@@ -40,7 +40,9 @@
     "matrix",
     "matrices",
     "accessor",
-    "abs"
+    "abs",
+    "deepset",
+    "dstructs"
   ],
   "bugs": {
     "url": "https://github.com/compute-io/abs/issues"

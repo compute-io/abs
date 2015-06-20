@@ -53,9 +53,9 @@ for ( i = 0; i < 6; i++ ) {
 }
 mat = matrix( data, [3,2], 'int16' );
 /*
-	[ -3  -2
-	  -1   0
-	   1   2 ]
+	[ -3 -2
+	  -1  0
+	   1  2 ]
 */
 
 out = abs( mat );
@@ -165,9 +165,9 @@ for ( i = 0; i < 6; i++ ) {
 }
 mat = matrix( data, [3,2], 'int16' );
 /*
-	[  -3 -2
-	   -1  0
-	    1  2 ]
+	[ -3 -2
+	  -1  0
+	   1  2 ]
 */
 
 out = abs( mat, {
@@ -182,6 +182,7 @@ out = abs( mat, {
 bool = ( mat === out );
 // returns true
 ```
+
 
 ## Examples
 

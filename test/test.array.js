@@ -44,12 +44,11 @@ describe( 'array abs', function tests() {
 		expected = new Float64Array( expected );
 
 		assert.deepEqual( actual, expected );
-
 	});
 
-	it( 'should return null if provided an empty array', function test() {
-		assert.isNull( abs( [], [] ) );
-		assert.isNull( abs( new Int8Array(), new Int8Array() ) );
+	it( 'should return an empty array if provided an empty array', function test() {
+		assert.deepEqual( abs( [], [] ), [] );
+		assert.deepEqual( abs( new Int8Array(), new Int8Array() ), new Int8Array() );
 	});
 
 });

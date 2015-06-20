@@ -279,7 +279,6 @@ describe( 'compute-abs', function tests() {
 		assert.strictEqual( actual, data );
 
 		assert.deepEqual( actual, expected );
-
 	});
 
 	it( 'should evaluate the absolute value function element-wise when provided a matrix', function test() {
@@ -332,10 +331,10 @@ describe( 'compute-abs', function tests() {
 		assert.deepEqual( out.data, d2 );
 	});
 
-	it( 'should return `null` if provided an empty data structure', function test() {
-		assert.isNull( abs( [] ) );
-		assert.isNull( abs( matrix( [0,0] ) ) );
-		assert.isNull( abs( new Int8Array() ) );
+	it( 'should return an empty data structure if provided an empty data structure', function test() {
+		assert.deepEqual( abs( [] ), [] );
+		assert.deepEqual( abs( matrix( [0,0] ) ).data, matrix( [0,0] ).data );
+		assert.deepEqual( abs( new Int8Array() ), new Float64Array() );
 	});
 
 });
