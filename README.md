@@ -106,7 +106,10 @@ var data = [
 	{'x':[4,36]}
 ];
 
-var out = abs( data, 'x|1', '|' );
+var out = abs( data, {
+	'path': 'x|1',
+	'sep': '|'
+});
 /*
 	[
 		{'x':[0,4]},
@@ -184,6 +187,67 @@ bool = ( mat === out );
 ```
 
 
+## Notes
+
+*	If an element is __not__ a numeric value, the element's absolute value is `NaN`.
+
+	``` javascript
+	var data, out;
+
+	out = abs( null );
+	// returns NaN
+
+	out = abs( true );
+	// returns NaN
+
+	out = abs( {'a':'b'} );
+	// returns NaN
+
+	out = abs( [ -1, null, -2 ] );
+	// returns [ 1, NaN, 2 ]
+
+	function getValue( d, i ) {
+		return d.x;
+	}
+	data = [
+		{'x':4},
+		{'x':-9},
+		{'x':16},
+		{'x':null}
+		{'x':-25},
+		{'x':36}
+	];
+
+	out = abs( data, {
+		'accessor': getValue
+	});
+	// returns [ 4, 9, 16, NaN, 25, 36 ]
+
+	out = abs( data, {
+		'path': 'x'
+	});
+	/*
+		[
+			{'x':4},
+			{'x':9},
+			{'x':16},
+			{'x':NaN},
+			{'x':25},
+			{'x':36}
+		]
+	*/
+	```
+
+*	Be careful when providing a data structure which contains non-numeric elements and specifying an `integer` output `array`, as `NaN` values are cast to `0`.
+
+	``` javascript
+	var out = abs( [ -1, null, -2 ], {
+		'dtype': 'int8'
+	});
+	// returns Int8Array( [1,0,2] );
+	```
+
+
 ## Examples
 
 ``` javascript
@@ -256,6 +320,8 @@ To run the example code from the top-level application directory,
 ``` bash
 $ node ./examples/index.js
 ```
+
+
 
 ## Tests
 

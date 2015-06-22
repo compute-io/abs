@@ -63,4 +63,24 @@ describe( 'accessor abs', function tests() {
 		}
 	});
 
+	it( 'should handle non-numeric values by setting the element to NaN', function test() {
+		var data, actual, expected;
+
+		data = [
+			{'x':-3},
+			{'x':null},
+			{'x':2}
+		];
+		actual = new Array( data.length );
+		actual = abs( actual, data, getValue );
+
+		expected = [ 3, NaN, 2 ];
+
+		assert.deepEqual( actual, expected );
+
+		function getValue( d ) {
+			return d.x;
+		}
+	});
+
 });
