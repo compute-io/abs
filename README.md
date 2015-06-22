@@ -238,13 +238,13 @@ bool = ( mat === out );
 	*/
 	```
 
-*	Be careful when providing a data structure which contains non-numeric elements and specifying an `integer` output `array`, as `NaN` values are cast to `0`.
+*	Be careful when providing a data structure which contains non-numeric elements and specifying an `integer` output data type, as `NaN` values are cast to `0`.
 
 	``` javascript
 	var out = abs( [ -1, null, -2 ], {
 		'dtype': 'int8'
 	});
-	// returns Int8Array( [1,0,2] );
+	// returns Int8Array( [1, 0, 2] );
 	```
 
 
