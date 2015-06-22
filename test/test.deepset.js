@@ -107,7 +107,7 @@ describe( 'deepset abs', function tests() {
 			{'x':[9,3]}
 		];
 
-		assert.deepEqual( actual, expected );
+		assert.deepEqual( data, expected );
 	});
 
 });
