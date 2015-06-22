@@ -51,4 +51,16 @@ describe( 'array abs', function tests() {
 		assert.deepEqual( abs( new Int8Array(), new Int8Array() ), new Int8Array() );
 	});
 
+	it( 'should handle non-numeric values by setting the element to NaN', function test() {
+		var data, actual, expected;
+
+		data = [ -3, null, -2 ];
+		actual = new Array( data.length );
+		actual = abs( actual, data );
+
+		expected = [ 3, NaN, 2 ];
+
+		assert.deepEqual( actual, expected );
+	});
+
 });
