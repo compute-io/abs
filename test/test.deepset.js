@@ -95,7 +95,6 @@ describe( 'deepset abs', function tests() {
 			{'x':[9,true]},
 			{'x':[9,3]}
 		];
-		actual = new Array( data.length );
 		actual = abs( data, 'x.1' );
 
 		expected = [
