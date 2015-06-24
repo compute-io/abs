@@ -75,6 +75,24 @@ describe( 'compute-abs', function tests() {
 		}
 	});
 
+	it( 'should throw an error if provided a typed-array and an unrecognized/unsupported data type option', function test() {
+		var values = [
+			'beep',
+			'boop'
+		];
+
+		for ( var i = 0; i < values.length; i++ ) {
+			expect( badValue( values[i] ) ).to.throw( Error );
+		}
+		function badValue( value ) {
+			return function() {
+				abs( new Int8Array([1,2,3]), {
+					'dtype': value
+				});
+			};
+		}
+	});
+
 	it( 'should throw an error if provided a matrix and an unrecognized/unsupported data type option', function test() {
 		var values = [
 			'beep',
@@ -99,7 +117,7 @@ describe( 'compute-abs', function tests() {
 			true,
 			undefined,
 			null,
-			NaN,
+			// NaN, // allowed
 			function(){},
 			{}
 		];
@@ -112,6 +130,8 @@ describe( 'compute-abs', function tests() {
 	it( 'should compute the absolute value when provided a number', function test() {
 		assert.strictEqual( abs( 0 ), 0 );
 		assert.strictEqual( abs( -2 ), 2 );
+
+		assert.isTrue( isnan( abs( NaN ) ) );
 	});
 
 	it( 'should evaluate the absolute value function when provided a plain array', function test() {

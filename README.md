@@ -143,7 +143,7 @@ out = abs( [ -0.1, 0.1, 10, -10], {
 // returns Uint8Array( [0, 0, 10, 10] )
 ```
 
-By default, the function returns a new data structure. To mutate the input data structure, set the `copy` option to `false`.
+By default, the function returns a new data structure. To mutate the input data structure (e.g., when input values can be discarded or when optimizing memory usage), set the `copy` option to `false`.
 
 ``` javascript
 var data,

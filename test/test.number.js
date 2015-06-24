@@ -24,6 +24,10 @@ describe( 'number abs', function tests() {
 		expect( abs ).to.be.a( 'function' );
 	});
 
+	it( 'should return a numeric value if provided a numeric value', function test() {
+		assert.isNumber( abs( 1 ) );
+	});
+
 	it( 'should evaluate the absolute value function', function test() {
 		assert.equal( abs( -9 ), 9 );
 		assert.equal( abs( 9 ), 9 );
@@ -31,8 +35,10 @@ describe( 'number abs', function tests() {
 		assert.equal( abs( 0 ), 0 );
 	});
 
-	it( 'should return a numeric value if provided a numeric value', function test() {
-		assert.isNumber( abs( 1 ) );
+	it( 'should return NaN if provided a NaN', function test() {
+		var val = abs( NaN );
+		assert.isNumber( val );
+		assert.ok( val !== val );
 	});
 
 });
