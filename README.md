@@ -4,6 +4,14 @@ Absolute Value
 
 > Computes an element-wise [absolute value](https://en.wikipedia.org/wiki/Absolute_value).
 
+The [absolute value](https://en.wikipedia.org/wiki/Absolute_value) is defined as
+
+<div class="equation" align="center" data-raw-text="
+    |x| = \begin{cases} x &amp; \textrm{if}\ x \geq 0 \\ -x &amp; \textrm{if}\ x < 0\end{cases}" data-equation="eq:absolute_value">
+	<img src="" alt="Absolute value definition.">
+	<br>
+</div>
+
 
 ## Installation
 
