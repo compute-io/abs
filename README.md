@@ -2,7 +2,7 @@ Absolute Value
 ===
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependencies][dependencies-image]][dependencies-url]
 
-> Computes an element-wise absolute value.
+> Computes an element-wise [absolute value](https://en.wikipedia.org/wiki/Absolute_value).
 
 
 ## Installation
@@ -23,7 +23,7 @@ var abs = require( 'compute-abs' );
 
 #### abs( x[, opts] )
 
-Computes an element-wise absolute value. `x` may be either a [`number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), an [`array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), a [`typed array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays), or a [`matrix`](https://github.com/dstructs/matrix).
+Computes an element-wise [absolute value](https://en.wikipedia.org/wiki/Absolute_value). `x` may be either a [`number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), an [`array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), a [`typed array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays), or a [`matrix`](https://github.com/dstructs/matrix).
 
 
 ``` javascript
@@ -189,7 +189,7 @@ bool = ( mat === out );
 
 ## Notes
 
-*	If an element is __not__ a numeric value, the element's absolute value is `NaN`.
+*	If an element is __not__ a numeric value, the element's [absolute value](https://en.wikipedia.org/wiki/Absolute_value) is `NaN`.
 
 	``` javascript
 	var data, out;
