@@ -2,7 +2,15 @@ Absolute Value
 ===
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependencies][dependencies-image]][dependencies-url]
 
-> Computes an element-wise absolute value.
+> Computes an element-wise [absolute value](https://en.wikipedia.org/wiki/Absolute_value).
+
+The [absolute value](https://en.wikipedia.org/wiki/Absolute_value) is defined as
+
+<div class="equation" align="center" data-raw-text="
+    |x| = \begin{cases} x &amp; \textrm{if}\ x \geq 0 \\ -x &amp; \textrm{if}\ x < 0\end{cases}" data-equation="eq:absolute_value">
+	<img src="https://cdn.rawgit.com/compute-io/abs/35f3f35f5a7ea712dc1e5bb5a4e8a9909ce76507/docs/img/eqn.svg" alt="Absolute value definition.">
+	<br>
+</div>
 
 
 ## Installation
@@ -23,7 +31,7 @@ var abs = require( 'compute-abs' );
 
 #### abs( x[, opts] )
 
-Computes an element-wise absolute value. `x` may be either a [`number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), an [`array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), a [`typed array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays), or a [`matrix`](https://github.com/dstructs/matrix).
+Computes an element-wise [absolute value](https://en.wikipedia.org/wiki/Absolute_value). `x` may be either a [`number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), an [`array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), a [`typed array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays), or a [`matrix`](https://github.com/dstructs/matrix).
 
 
 ``` javascript
@@ -53,9 +61,9 @@ for ( i = 0; i < 6; i++ ) {
 }
 mat = matrix( data, [3,2], 'int16' );
 /*
-	[ -3  -2
-	  -1   0
-	   1   2 ]
+	[ -3 -2
+	  -1  0
+	   1  2 ]
 */
 
 out = abs( mat );
@@ -106,7 +114,10 @@ var data = [
 	{'x':[4,36]}
 ];
 
-var out = abs( data, 'x|1', '|' );
+var out = abs( data, {
+	'path': 'x|1',
+	'sep': '|'
+});
 /*
 	[
 		{'x':[0,4]},
@@ -140,7 +151,7 @@ out = abs( [ -0.1, 0.1, 10, -10], {
 // returns Uint8Array( [0, 0, 10, 10] )
 ```
 
-By default, the function returns a new data structure. To mutate the input data structure, set the `copy` option to `false`.
+By default, the function returns a new data structure. To mutate the input data structure (e.g., when input values can be discarded or when optimizing memory usage), set the `copy` option to `false`.
 
 ``` javascript
 var data,
@@ -165,9 +176,9 @@ for ( i = 0; i < 6; i++ ) {
 }
 mat = matrix( data, [3,2], 'int16' );
 /*
-	[  -3 -2
-	   -1  0
-	    1  2 ]
+	[ -3 -2
+	  -1  0
+	   1  2 ]
 */
 
 out = abs( mat, {
@@ -182,6 +193,68 @@ out = abs( mat, {
 bool = ( mat === out );
 // returns true
 ```
+
+
+## Notes
+
+*	If an element is __not__ a numeric value, the element's [absolute value](https://en.wikipedia.org/wiki/Absolute_value) is `NaN`.
+
+	``` javascript
+	var data, out;
+
+	out = abs( null );
+	// returns NaN
+
+	out = abs( true );
+	// returns NaN
+
+	out = abs( {'a':'b'} );
+	// returns NaN
+
+	out = abs( [ -1, null, -2 ] );
+	// returns [ 1, NaN, 2 ]
+
+	function getValue( d, i ) {
+		return d.x;
+	}
+	data = [
+		{'x':4},
+		{'x':-9},
+		{'x':16},
+		{'x':null},
+		{'x':-25},
+		{'x':36}
+	];
+
+	out = abs( data, {
+		'accessor': getValue
+	});
+	// returns [ 4, 9, 16, NaN, 25, 36 ]
+
+	out = abs( data, {
+		'path': 'x'
+	});
+	/*
+		[
+			{'x':4},
+			{'x':9},
+			{'x':16},
+			{'x':NaN},
+			{'x':25},
+			{'x':36}
+		]
+	*/
+	```
+
+*	Be careful when providing a data structure which contains non-numeric elements and specifying an `integer` output data type, as `NaN` values are cast to `0`.
+
+	``` javascript
+	var out = abs( [ -1, null, -2 ], {
+		'dtype': 'int8'
+	});
+	// returns Int8Array( [1, 0, 2] );
+	```
+
 
 ## Examples
 
@@ -255,6 +328,8 @@ To run the example code from the top-level application directory,
 ``` bash
 $ node ./examples/index.js
 ```
+
+
 
 ## Tests
 

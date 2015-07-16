@@ -9,6 +9,9 @@ var // Expectation library:
 	// Matrix data structure:
 	matrix = require( 'dstructs-matrix' ),
 
+	// Validate if a value is NaN:
+	isnan = require( 'validate.io-nan' ),
+
 	// Module to be tested:
 	abs = require( './../lib' ),
 
@@ -28,27 +31,6 @@ describe( 'compute-abs', function tests() {
 
 	it( 'should export a function', function test() {
 		expect( abs ).to.be.a( 'function' );
-	});
-
-	it( 'should throw an error if the first argument is neither a number or array-like or matrix-like', function test() {
-		var values = [
-			// '5', // valid as is array-like (length)
-			true,
-			undefined,
-			null,
-			NaN,
-			function(){},
-			{}
-		];
-
-		for ( var i = 0; i < values.length; i++ ) {
-			expect( badValue( values[i] ) ).to.throw( TypeError );
-		}
-		function badValue( value ) {
-			return function() {
-				abs( value );
-			};
-		}
 	});
 
 	it( 'should throw an error if provided an invalid option', function test() {
@@ -93,6 +75,24 @@ describe( 'compute-abs', function tests() {
 		}
 	});
 
+	it( 'should throw an error if provided a typed-array and an unrecognized/unsupported data type option', function test() {
+		var values = [
+			'beep',
+			'boop'
+		];
+
+		for ( var i = 0; i < values.length; i++ ) {
+			expect( badValue( values[i] ) ).to.throw( Error );
+		}
+		function badValue( value ) {
+			return function() {
+				abs( new Int8Array([1,2,3]), {
+					'dtype': value
+				});
+			};
+		}
+	});
+
 	it( 'should throw an error if provided a matrix and an unrecognized/unsupported data type option', function test() {
 		var values = [
 			'beep',
@@ -111,9 +111,27 @@ describe( 'compute-abs', function tests() {
 		}
 	});
 
+	it( 'should return NaN if the first argument is neither a number, array-like, or matrix-like', function test() {
+		var values = [
+			// '5', // valid as is array-like (length)
+			true,
+			undefined,
+			null,
+			NaN,
+			function(){},
+			{}
+		];
+
+		for ( var i = 0; i < values.length; i++ ) {
+			assert.isTrue( isnan( abs( values[ i ] ) ) );
+		}
+	});
+
 	it( 'should compute the absolute value when provided a number', function test() {
 		assert.strictEqual( abs( 0 ), 0 );
 		assert.strictEqual( abs( -2 ), 2 );
+
+		assert.isTrue( isnan( abs( NaN ) ) );
 	});
 
 	it( 'should evaluate the absolute value function when provided a plain array', function test() {
@@ -279,7 +297,6 @@ describe( 'compute-abs', function tests() {
 		assert.strictEqual( actual, data );
 
 		assert.deepEqual( actual, expected );
-
 	});
 
 	it( 'should evaluate the absolute value function element-wise when provided a matrix', function test() {
@@ -332,10 +349,10 @@ describe( 'compute-abs', function tests() {
 		assert.deepEqual( out.data, d2 );
 	});
 
-	it( 'should return `null` if provided an empty data structure', function test() {
-		assert.isNull( abs( [] ) );
-		assert.isNull( abs( matrix( [0,0] ) ) );
-		assert.isNull( abs( new Int8Array() ) );
+	it( 'should return an empty data structure if provided an empty data structure', function test() {
+		assert.deepEqual( abs( [] ), [] );
+		assert.deepEqual( abs( matrix( [0,0] ) ).data, matrix( [0,0] ).data );
+		assert.deepEqual( abs( new Int8Array() ), new Float64Array() );
 	});
 
 });

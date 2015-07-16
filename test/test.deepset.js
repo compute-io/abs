@@ -25,7 +25,7 @@ describe( 'deepset abs', function tests() {
 	});
 
 	it( 'should compute the absolute value function and deep set', function test() {
-		var data, expected, i;
+		var data, actual, expected;
 
 		data = [
 			{'x':-3},
@@ -37,7 +37,7 @@ describe( 'deepset abs', function tests() {
 			{'x':3}
 		];
 
-		data = abs( data, 'x' );
+		actual = abs( data, 'x' );
 
 		expected = [
 			{'x':3},
@@ -49,9 +49,8 @@ describe( 'deepset abs', function tests() {
 			{'x':3}
 		];
 
-		for ( i = 0; i < data.length; i++ ) {
-			assert.strictEqual( data[ i ].x, expected[ i ].x );
-		}
+		assert.strictEqual( data, actual );
+		assert.deepEqual( data, expected);
 
 		// Custom separator...
 		data = [
@@ -75,15 +74,40 @@ describe( 'deepset abs', function tests() {
 			{'x':[9,3]}
 		];
 
-		for ( i = 0; i < data.length; i++ ) {
-			assert.strictEqual( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 'custom separator' );
-		}
-
+		assert.deepEqual( data, expected, 'custom separator' );
 	});
 
-	it( 'should return null if provided an empty array', function test() {
-		assert.isNull( abs( [], 'x' ) );
-		assert.isNull( abs( [], 'x', '/' ) );
+	it( 'should return an empty array if provided an empty array', function test() {
+		var arr = [];
+		assert.deepEqual( abs( arr, 'x' ), [] );
+		assert.deepEqual( abs( arr, 'x', '/' ), [] );
+	});
+
+	it( 'should handle non-numeric values by setting the element to NaN', function test() {
+		var data, actual, expected;
+
+		data = [
+			{'x':[9,-3]},
+			{'x':[9,-2]},
+			{'x':[9,-1]},
+			{'x':[9,null]},
+			{'x':[9,1]},
+			{'x':[9,true]},
+			{'x':[9,3]}
+		];
+		actual = abs( data, 'x.1' );
+
+		expected = [
+			{'x':[9,3]},
+			{'x':[9,2]},
+			{'x':[9,1]},
+			{'x':[9,NaN]},
+			{'x':[9,1]},
+			{'x':[9,NaN]},
+			{'x':[9,3]}
+		];
+
+		assert.deepEqual( data, expected );
 	});
 
 });

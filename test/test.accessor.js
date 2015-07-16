@@ -54,11 +54,30 @@ describe( 'accessor abs', function tests() {
 		function getValue( d ) {
 			return d.x;
 		}
-
 	});
 
-	it( 'should return null if provided an empty array', function test() {
-		assert.isNull( abs( [], [], getValue ) );
+	it( 'should return empty array if provided an empty array', function test() {
+		assert.deepEqual( abs( [], [], getValue ), [] );
+		function getValue( d ) {
+			return d.x;
+		}
+	});
+
+	it( 'should handle non-numeric values by setting the element to NaN', function test() {
+		var data, actual, expected;
+
+		data = [
+			{'x':-3},
+			{'x':null},
+			{'x':2}
+		];
+		actual = new Array( data.length );
+		actual = abs( actual, data, getValue );
+
+		expected = [ 3, NaN, 2 ];
+
+		assert.deepEqual( actual, expected );
+
 		function getValue( d ) {
 			return d.x;
 		}
